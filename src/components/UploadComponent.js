@@ -41,7 +41,7 @@ class Upload extends Component {
       console.log(this.state.selectedFile); 
       // Request made to the backend api 
       // Send formData object 
-      axios.post(localhost + "/upload", formData, {onUploadProgress:ProgressEvent =>
+      axios.post(herokuServer  + "/upload", formData, {onUploadProgress:ProgressEvent =>
         console.log("upload progress "+ Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%")
       
       }
