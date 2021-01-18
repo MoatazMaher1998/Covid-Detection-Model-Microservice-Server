@@ -26,10 +26,15 @@ const fs = require('fs');
 configurations.decideMode(parseInt(process.env.MODE,10)); // 1 for localhost 2 for heroku server
 
 Database.startConnection(configurations.getDatabaseConnection());
+
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
+var creds = AWS.Credentials();
+creds.accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+creds.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+AWS.config.credentials = creds;
 app.post('/upload',function(req,res){
       upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
