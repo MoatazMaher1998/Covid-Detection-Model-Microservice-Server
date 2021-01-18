@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-bestmodelinception.h5
+
 # production
 /build
 
