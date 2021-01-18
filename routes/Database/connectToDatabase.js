@@ -1,0 +1,50 @@
+//const MongoClient = require('mongodb').MongoClient;
+const mongoose = require("mongoose");
+const path = require('path');
+var client;
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  password: String,
+  age: Number,
+  gender: String,
+});
+var User = mongoose.model("User", userSchema);
+function addUser(data,res){
+    if(data.password != data.confirmPassword){
+      res.status(401).json("Passwords does not match");
+    }
+    else
+    var myData = new User({
+      name: data.fullname,
+      email: data.email,
+      password: data.password,
+      age: data.age,
+      gender: data.gender
+    });
+    myData.save().then(item => {
+      res.send("item saved to database");
+    }).catch(err => {
+     res.status(400).send("unable to save to database");
+    });
+}
+function startConnection(type){
+const url = type;
+mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+client = mongoose.connection;
+client.on('ECONNREFUSED', console.error.bind(console, 'Connection Error:'));
+client.once('open', function() {
+  console.log("Successfully connected to MongoDB!");
+});
+}
+
+function getUserSchema(){
+  return userSchema;
+}
+function getClient(){
+  return client;
+}
+module.exports = {startConnection, getClient , getUserSchema , addUser} ;
