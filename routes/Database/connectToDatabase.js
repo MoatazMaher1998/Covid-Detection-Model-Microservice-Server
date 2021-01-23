@@ -1,6 +1,7 @@
 //const MongoClient = require('mongodb').MongoClient;
 const mongoose = require("mongoose");
 const path = require('path');
+var bcrypt = require('bcrypt');
 var client;
 const userSchema = new mongoose.Schema({
   name: String,
@@ -15,18 +16,25 @@ function addUser(data,res){
       res.status(401).json("Passwords does not match");
     }
     else
-    var myData = new User({
-      name: data.fullname,
-      email: data.email,
-      password: data.password,
-      age: data.age,
-      gender: data.gender
-    });
-    myData.save().then(item => {
-      res.send("item saved to database");
-    }).catch(err => {
-     res.status(400).send("unable to save to database");
-    });
+    bcrypt.hash(data.password, parseInt(process.env.BCRYPT_SALT_ROUNDS,10))
+    .then(function(hashedPassword) {
+        data.password = hashedPassword;
+        var myData = new User({
+          name: data.fullname,
+          email: data.email,
+          password: data.password,
+          age: data.age,
+          gender: data.gender
+        });
+        myData.save().then(item => {
+          res.send("item saved to database");
+        }).catch(err => {
+         res.status(400).send("unable to save to database");
+        });
+    })
+    
+   
+   
 }
 function startConnection(type){
 const url = type;

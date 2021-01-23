@@ -121,10 +121,8 @@ class Header extends Component {
             input["confirmPassword"] = "";
             input["dateOfBirth"] = "";
             input["gender"] = "";
-            this.setState({input:input}); 
-            var server = "https://checkmeplease.herokuapp.com/newuser";
-            var local = "http://localhost:8080/newuser";
-            axios.post(server, this.state.input , {onUploadProgress:ProgressEvent =>
+            this.setState({input:input});
+            axios.post(process.env.REACT_APP_Domain + "/newuser", this.state.input , {onUploadProgress:ProgressEvent =>
            console.log("upload progress "+ Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%")
         
       }

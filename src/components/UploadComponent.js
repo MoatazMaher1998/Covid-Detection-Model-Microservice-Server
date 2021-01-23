@@ -51,7 +51,7 @@ class Upload extends Component {
       console.log(this.state.selectedFile); 
       // Request made to the backend api 
       // Send formData object 
-      axios.post(process.env.REACT_APP_Domain  + "upload", formData, {onUploadProgress:ProgressEvent => {
+      axios.post(process.env.REACT_APP_Domain  + "/upload", formData, {onUploadProgress:ProgressEvent => {
         console.log("upload progress "+ Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%")
         this.setState({message: 'Uploading: ' + Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%",isLoading:true});
       }
