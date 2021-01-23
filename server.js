@@ -52,6 +52,7 @@ app.post('/upload',function(req,res){
           var process = spawn('python',["./ML.py", data.Location] );
                                process.stdout.on('data', function(data) { 
                                     console.log(data.toString());
+                                    res.status(200);
                                 });
     
       });
