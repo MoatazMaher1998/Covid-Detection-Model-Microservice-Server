@@ -9,7 +9,9 @@ class Upload extends Component {
   
       // Initially, no file is selected 
       selectedFile: null,
-      errors:{}
+      errors:{},
+      message: 'Choose image before Pressing the Examine button',
+      isLoading: false
     }; 
      
     // On file select (from the pop up) 
@@ -17,8 +19,16 @@ class Upload extends Component {
      
       // Update the state 
       this.setState({ selectedFile: event.target.files[0] }); 
-     
-    }; 
+      var reader = new FileReader();
+      var url = reader.readAsDataURL(event.target.files[0]);
+
+      reader.onloadend = function (e) {
+          this.setState({
+              imgSrc: [reader.result]
+          })
+        }.bind(this);
+        
+        }; 
      
     // On file upload (click the upload button) 
     onFileUpload = () => { 
@@ -37,14 +47,17 @@ class Upload extends Component {
       
       if (new RegExp(substrings.join("|")).test(this.state.selectedFile.name )) {
         // Details of the uploaded file 
+        
       console.log(this.state.selectedFile); 
       // Request made to the backend api 
       // Send formData object 
-      axios.post(process.env.REACT_APP_Domain  + "upload", formData, {onUploadProgress:ProgressEvent =>
+      axios.post(process.env.REACT_APP_Domain  + "upload", formData, {onUploadProgress:ProgressEvent => {
         console.log("upload progress "+ Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%")
-      
+        this.setState({message: 'Uploading: ' + Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%",isLoading:true});
+      }
       }
       );
+      this.setState({message: 'Processing... This could take a minute'});
       errors = {};
     }
       else{
@@ -70,20 +83,13 @@ class Upload extends Component {
           
         return ( 
           <div> 
-            <h2>File Details:</h2> 
-            <p>File Name: {this.state.selectedFile.name}</p> 
-            <p>File Type: {this.state.selectedFile.type}</p> 
-            <p> 
-              Last Modified:{" "} 
-              {this.state.selectedFile.lastModifiedDate.toDateString()} 
-            </p> 
+            <img src={this.state.imgSrc} height='200px' width='200px'/>
           </div> 
         ); 
       } else { 
         return ( 
           <div> 
             <br /> 
-            <h4>Choose image before Pressing the Examine button</h4> 
           </div> 
         ); 
       } 
@@ -105,6 +111,13 @@ class Upload extends Component {
                 <div className="text-danger">{this.state.errors.fileError}</div>
             </div> 
           {this.fileData()} 
+          <h4>
+          {this.state.message}
+          
+          {this.state.isLoading === true &&
+            <div class="center loader"></div>
+           }
+          </h4>
         </div> 
       ); 
     } 

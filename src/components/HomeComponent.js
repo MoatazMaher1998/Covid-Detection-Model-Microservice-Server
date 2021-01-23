@@ -16,8 +16,7 @@ class Home extends Component {
                         <div className="row row-header">
                             <div className=" center col-12 col-sm-6">
                                 <h1>Get Your Results Now!</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nulla odio, sodales in lorem eget.</p>
-                            </div>
+                                <p>Press the button below and upload your X-ray image file to get your results now.</p></div>
                         </div>
                     </div>
                     <Link to="/getstarted"><Button color="primary">Get Started</Button></Link>
@@ -27,22 +26,23 @@ class Home extends Component {
                         <div className="row row-header">
                             <div className="center col-12 col-sm-6">
                                 <h1>Contact Us</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nulla odio, sodales in lorem eget.</p>
+                                <p>If you have any question or business inquiry, please send us an e-mail by pressing the button below.</p>
+                                <Link to="/contactus"><Button color="primary">Learn More</Button></Link>
                             </div>
                         </div>
                     </div>
-                    <Link to="/contactus"><Button color="primary">Learn More</Button></Link>
+                    
                 </Jumbotron>
                 <Jumbotron className="center  aboutUs largeFont borderBottom">
                     <div className=" container" >
                         <div className="row row-header">
                             <div className="center col-12 col-sm-6">
                                 <h1>About Us</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nulla odio, sodales in lorem eget.</p>
+                                <p>Press the button below to learn more about us and how we created this website</p>
+                                <Link to="/aboutus"><Button color="primary">Learn More</Button></Link>
                             </div>
                         </div>
                     </div>
-                    <Link to="/aboutus"><Button color="primary">Learn More</Button></Link>
                 </Jumbotron>
             </div>
         );
