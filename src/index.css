@@ -34,7 +34,7 @@ code {
   padding:70px 30px 70px 30px;
   margin:0px auto;
   background: none ;
-  color:floralwhite;
+  color:black;
   border: peachpuff;
   border-radius: 0px;
   
@@ -52,7 +52,8 @@ address{
 }
 
 .navbar-dark {
-  background-color: #1e89aa;
+  background-color: #24a7cf;
+  color: black
 }
 
 .full-page{
@@ -61,7 +62,7 @@ address{
 }
 
 .getStarted{
-  background-image: url("images/virus.jpg");
+  background-image: url("images/virus.png");
   background-size: cover;
 }
 
@@ -97,4 +98,18 @@ address{
 
 .table{
   background-color: #aac7d3;
+}
+
+.loader {
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

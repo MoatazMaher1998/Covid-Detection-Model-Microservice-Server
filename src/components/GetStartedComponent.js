@@ -16,8 +16,10 @@ class GetStarted extends Component {
                     <div className="container" >
                         <div className="row row-header">
                             <div className="center col-12 col-sm-6">
-                                <h1>Upload your CT Scan Here</h1>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper orci libero, porta hendrerit libero dignissim nec. Pellentesque eu velit pulvinar nisl posuere luctus. In dignissim nunc vitae felis pharetra, vitae congue augue lacinia. Mauris est urna, feugiat consectetur ipsum quis, volutpat pretium dolor. Aliquam vitae accumsan nisi. Maecenas a massa non nisl pretium commodo. Phasellus dignissim ante non nunc sollicitudin, ac rutrum arcu aliquet. Morbi eu varius urna. Nullam pulvinar sem quis neque lacinia ornare. Nullam fermentum euismod finibus.</p>                            
+                            <h1>Upload your X-ray image</h1>
+                                <br></br>
+                                <h4>Press the choose file button and choose the X-ray image your want to upload then press Examine to get your result.</h4>
+                                <h4>It must be one of these formats (.JPG, .JPEG, .PNG)</h4>                            
                             </div>
                         </div>
                     </div>
