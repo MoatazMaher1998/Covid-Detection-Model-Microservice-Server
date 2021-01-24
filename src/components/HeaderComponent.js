@@ -6,8 +6,7 @@ import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import '../header.css';
 //const server = require('../')
-const FB_APPLICATION_ID="377332836652690";
-const GOOGLE_CLIENT_ID="315856601755-gaius6c2t3nvfpkt2ne8659dbs6lksdk.apps.googleusercontent.com";
+
 
 
 class Header extends Component {
@@ -247,7 +246,7 @@ class Header extends Component {
             </div>
         ) : 
         facebookData = (<FacebookLogin
-            appId={FB_APPLICATION_ID}
+            appId={process.env.REACT_APP_FB_APPLICATION_ID}
             fields="picture,name,email,birthday,gender"
             onClick={this.componentClicked}
             callback={this.responseFacebook} 
@@ -322,7 +321,7 @@ class Header extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <GoogleLogin
-                                clientId={GOOGLE_CLIENT_ID}
+                                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                                 buttonText="Login with Google"
                                 onSuccess={this.responseGoogle}
                                 onFailure={this.responseGoogle}
