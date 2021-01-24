@@ -122,11 +122,7 @@ class Header extends Component {
             input["dateOfBirth"] = "";
             input["gender"] = "";
             this.setState({input:input});
-            axios.post(process.env.REACT_APP_Domain + "/newuser", this.state.input , {onUploadProgress:ProgressEvent =>
-           console.log("upload progress "+ Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%")
-        
-      }
-      ); 
+            axios.post(process.env.REACT_APP_Domain + "/newuser", this.state.input); 
         }
     }
 
@@ -146,7 +142,7 @@ class Header extends Component {
           errors["loginEmail"] = "Please enter your email Address.";
         }
 
-        if (!input["email"]) {
+        if (!input["password"]) {
             isValid = false;
             errors["loginPassword"] = "Please enter your password.";
           }
@@ -230,6 +226,7 @@ class Header extends Component {
             input["loginPassword"] = "";
             input["rememberMe"] = "";
             this.setState({input:input});
+            axios.post(process.env.REACT_APP_Domain + "/getUser", this.state.input);
             console.log(this.state)
         }
     }

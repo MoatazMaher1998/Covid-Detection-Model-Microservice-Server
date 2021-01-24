@@ -60,6 +60,12 @@ app.post('/upload',function(req,res){
    });
     });
 app.use('/*',Router);
+app.post('/getUser',function(req,res){
+  var userCred = req.body;
+  Database.getUser(userCred,function(status){
+    console.log(status);
+  });
+});
 app.post('/newuser',function(req,res){
   Database.addUser(req.body,res);
  });

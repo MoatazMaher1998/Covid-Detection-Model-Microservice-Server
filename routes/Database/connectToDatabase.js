@@ -1,6 +1,5 @@
 //const MongoClient = require('mongodb').MongoClient;
 const mongoose = require("mongoose");
-const path = require('path');
 var bcrypt = require('bcrypt');
 var client;
 const userSchema = new mongoose.Schema({
@@ -14,7 +13,7 @@ var User = mongoose.model("User", userSchema);
 function addUser(data,res){
     User.find({'email' : data.email},function(err,user){
       if(err){console.log(err);}
-      else if(user.length !== 0){
+      else if(user.length != 0){
         console.log("duplicate");
        return res.status(401).json("user already exist");
       }
@@ -54,6 +53,20 @@ client.once('open', function() {
   console.log("Successfully connected to MongoDB!");
 });
 }
+function getUser(Cred,callback){
+  
+  var status;
+  User.find({'email' : Cred.email},function(err,user){
+   
+    if(user.length === 0){status = "noUser";callback(status);}
+    else 
+    bcrypt.compare(Cred.password,user[0].password, function(err, result) {
+      if(result === true){status = "pass"}
+      else {status = "wrongPassword";}
+    callback(status);
+  });
+  });
+}
 
 function getUserSchema(){
   return userSchema;
@@ -61,4 +74,4 @@ function getUserSchema(){
 function getClient(){
   return client;
 }
-module.exports = {startConnection, getClient , getUserSchema , addUser} ;
+module.exports = {startConnection, getClient , getUserSchema , addUser , getUser} ;
