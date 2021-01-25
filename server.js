@@ -30,7 +30,8 @@ const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
-AWS.config.update({region: 'eu-west-2'});
+AWS.config.update({AWS_DEFAULT_REGION : 'eu-west-2'});
+AWS.config.update({REGION : 'eu-west-2'});
 app.post('/upload',function(req,res){
       upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
@@ -49,7 +50,6 @@ app.post('/upload',function(req,res){
       s3.upload(params, function(s3Err, data) {
           if (s3Err) throw s3Err
           console.log(`File uploaded successfully at ${data.Location}`);
-          console.log(AWS.config);
           var spawn = require("child_process").spawn; 
           var process = spawn('python',["./ML.py", data.Location] );
                                process.stdout.on('data', function(data) { 
