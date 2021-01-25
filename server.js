@@ -28,10 +28,9 @@ configurations.decideMode(parseInt(process.env.MODE,10)); // 1 for localhost 2 f
 Database.startConnection(configurations.getDatabaseConnection());
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region : 'eu-west-2'
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
-//AWS.config.update({region: 'eu-west-2'});
+AWS.config.update({region: 'eu-west-2'});
 app.post('/upload',function(req,res){
       upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
