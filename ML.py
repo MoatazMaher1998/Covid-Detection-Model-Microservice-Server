@@ -13,7 +13,7 @@ from PIL import Image
 print("IN PIL")
 import sys
 print("IN SYS")
-import tensorflow-cpu as tf
+import tensorflow as tf
 print("IN Tensor")
 import cv2
 import numpy as np
