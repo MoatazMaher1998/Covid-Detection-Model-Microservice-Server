@@ -7,20 +7,20 @@ Original file is located at
     https://colab.research.google.com/drive/1Rj5Uniegi1LUfeDuvcDSK-_ybokbKFV4
 """
 print("IN")
-import io
+#import io
 print("IN io")
-from PIL import Image
+#from PIL import Image
 print("IN PIL")
-import sys
+#import sys
 print("IN SYS")
-import tensorflow as tf
+#import tensorflow as tf
 print("IN Tensor")
-import cv2
-import numpy as np
-from tensorflow.keras.models import Model
-from keras.layers import Activation, Dropout, Flatten, Dense
-import requests 
-import pickle
+#import cv2
+#import numpy as np
+#from tensorflow.keras.models import Model
+#from keras.layers import Activation, Dropout, Flatten, Dense
+#import requests 
+#import pickle
 print("IN 2")
 def INCV3():
 
