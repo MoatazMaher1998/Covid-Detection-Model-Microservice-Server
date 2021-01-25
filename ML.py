@@ -8,9 +8,13 @@ Original file is located at
 """
 print("IN")
 import io
+print("IN io")
 from PIL import Image
+print("IN PIL")
 import sys
+print("IN SYS")
 import tensorflow as tf
+print("IN Tensor")
 import cv2
 import numpy as np
 from tensorflow.keras.models import Model
