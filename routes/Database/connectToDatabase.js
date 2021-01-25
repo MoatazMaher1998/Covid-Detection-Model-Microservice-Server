@@ -13,7 +13,7 @@ var User = mongoose.model("User", userSchema);
 function addUser(data,res){
     User.find({'email' : data.email},function(err,user){
       if(err){console.log(err);}
-      else if(user.length != 0){
+      else if(user.length !== 0){
         console.log("duplicate");
        return res.status(401).json("user already exist");
       }

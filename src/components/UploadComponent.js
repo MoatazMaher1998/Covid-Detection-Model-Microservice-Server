@@ -56,7 +56,11 @@ class Upload extends Component {
         this.setState({message: 'Uploading: ' + Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%",isLoading:true});
       }
       }
-      );
+      ).then((response) => {
+        console.table(response.data);
+      }, (error) => {
+        console.log(error);
+      });;
       this.setState({message: 'Processing... This could take a minute'});
       errors = {};
     }

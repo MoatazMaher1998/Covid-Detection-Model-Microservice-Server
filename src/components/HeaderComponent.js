@@ -200,7 +200,7 @@ class Header extends Component {
     
         if (typeof input["password"] !== "undefined" && typeof input["confirmPassword"] !== "undefined") {
             
-          if (input["password"] != input["confirmPassword"]) {
+          if (input["password"] !== input["confirmPassword"]) {
             isValid = false;
             errors["confirmPassword"] = "Passwords don't match.";
           }

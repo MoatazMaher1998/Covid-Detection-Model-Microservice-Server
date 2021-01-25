@@ -53,6 +53,7 @@ app.post('/upload',function(req,res){
                                process.stdout.on('data', function(data) { 
                                     console.log(data.toString());
                                     res.status(200);
+                                    res.send(data.toString());
                                     process.kill();
                                 });
     

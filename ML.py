@@ -46,12 +46,11 @@ def INCV3():
     return model
 
 model = INCV3()
-print("im in python now",sys.argv[1])
 model.load_weights('./bestmodelinception.h5')
 response = requests.get(sys.argv[1])
 
 img = np.array(Image.open(io.BytesIO(response.content))) / 255
-print("IMG" , img.shape)
+#print("IMG" , img.shape)
 
 
 #img1 = cv2.imread("22.png")/255 
@@ -59,11 +58,14 @@ print("IMG" , img.shape)
 img_modify_size = cv2.resize(img,(224,224))
 img_modify_shape = img_modify_size.reshape(1,224,224,3)
 result = model(img_modify_shape)
-print(result)
+#print(result)
 
 a = result[0][0].numpy()
 b = result[0][1].numpy()
 if a>b:
-  print("Covid")
+  #print(a * 100,"Covid")
+  print("%.2f" % round(a * 100, 2) + "%","Covid")
+  print("%.2f" % round(b * 100, 2) + "%","Normal")
 else:
-  print("Normal")
+  print("%.2f" % round(b * 100, 2) + "%","Normal")
+  print("%.2f" % round(a * 100, 2) + "%","Covid")
