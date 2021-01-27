@@ -225,7 +225,12 @@ class Header extends Component {
             input["loginPassword"] = "";
             input["rememberMe"] = "";
             this.setState({input:input});
-            axios.post(process.env.REACT_APP_Domain + "/getUser", this.state.input);
+            axios.post(process.env.REACT_APP_Domain + "/getUser", this.state.input).then((response) => {
+                console.log(response);
+            //    <Redirect to="/Dashboard"/>
+              }, (error) => {
+                console.log(error);
+              });;
             console.log(this.state)
         }
     }
@@ -258,7 +263,7 @@ class Header extends Component {
             return (
             <Redirect to="/dashboard"/>
             )
-        }
+        } 
         return (
             
             <React.Fragment>
