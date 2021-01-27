@@ -53,8 +53,11 @@ class Upload extends Component {
       // Send formData object 
       axios.post(process.env.REACT_APP_Domain  + "/upload", formData, {onUploadProgress:ProgressEvent => {
         console.log("upload progress "+ Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%")
-        this.setState({message: 'Uploading.. Please Wait a Minute to Get Your Result ',isLoading:true});
-        setTimeout(() => {this.setState({message: 'Processing.. Almost There'});}, 5000);
+        this.setState({message: 'Uploading: ' + Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%",isLoading:true});
+        if (Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))==100){
+          this.setState({message: 'Processing.. Almost There'});
+        }
+         // setTimeout(() => {this.setState({message: 'Processing.. Almost There'});}, 5000);
       }
       }
       ).then((response) => {
