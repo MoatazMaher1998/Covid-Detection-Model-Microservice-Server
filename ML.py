@@ -19,6 +19,7 @@ import tensorflow as tf
 #print("IN Tensor")
 import cv2
 import numpy as np
+import keras
 from tensorflow.keras.models import Model
 from keras.layers import Activation, Dropout, Flatten, Dense
 import requests 
@@ -53,7 +54,8 @@ def INCV3():
     return model
 
 model = INCV3()
-model.load_weights('weights.h5')
+#model.load_weights('weights.h5')
+model = keras.models.load_model("weights.h5")
 #response = requests.get(sys.argv[1])
 #print("im in python now")
 #img = np.array(Image.open(io.BytesIO(response.content))) / 255
