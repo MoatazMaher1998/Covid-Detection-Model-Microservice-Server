@@ -5,4 +5,4 @@ numpy==1.19.5
 requests==2.25.1
 opencv-python-headless==4.5.1.48
 pathlib==1.0.1
-h5py==2.1.0
+h5py==2.10.0
