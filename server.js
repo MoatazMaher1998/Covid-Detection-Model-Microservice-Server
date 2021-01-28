@@ -79,8 +79,8 @@ app.post('/getUser',function(req,res){
       req.session.loggedin = true;
       req.session.username = userCred;
       console.log(req.session.loggedin + req.session.username);
-      res.end();
     }
+    res.send(status.toString());
   });
   
 });
