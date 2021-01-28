@@ -24,7 +24,9 @@ class Header extends Component {
             picture: '',
             email:'',
             gender:'',
-            birthday: ''
+            birthday: '',
+            loginErrorMessage:'',
+            RegistrationerrorMessage:''
         }
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleLoginModal = this.toggleLoginModal.bind(this);
@@ -112,16 +114,25 @@ class Header extends Component {
     handleRegistration(event){ 
         event.preventDefault();
         if(this.validateRegistration()){
-            this.toggleRegistrationModal();
-            let input = {};
-            input["name"] = "";
-            input["email"] = "";
-            input["password"] = "";
-            input["confirmPassword"] = "";
-            input["dateOfBirth"] = "";
-            input["gender"] = "";
-            this.setState({input:input});
-            axios.post(process.env.REACT_APP_Domain + "/newuser", this.state.input); 
+
+            axios.post(process.env.REACT_APP_Domain + "/newuser", this.state.input).then(response => {
+                console.log('SUCCESS');
+                this.toggleRegistrationModal();
+                let input = {};
+                input["name"] = "";
+                input["email"] = "";
+                input["password"] = "";
+                input["confirmPassword"] = "";
+                input["dateOfBirth"] = "";
+                input["gender"] = "";
+                this.setState({input:input,RegistrationerrorMessage:''});
+
+            })
+            .catch((error) => {
+                if(error.status=401){
+                    this.setState({RegistrationerrorMessage:'This E-mail address is already registered'});
+                }
+            });
         }
     }
 
@@ -219,14 +230,25 @@ class Header extends Component {
         console.log("TEST");
         event.preventDefault();
         if(this.validateLogin()){
-            this.toggleLoginModal();
-            let input = {};
-            input["loginEmail"] = "";
-            input["loginPassword"] = "";
-            input["rememberMe"] = "";
-            this.setState({input:input});
+            
             axios.post(process.env.REACT_APP_Domain + "/getUser", this.state.input).then((response) => {
-                console.log(response);
+                console.log('TEST '+ response.data.toString());
+                if (response.data.toString()=="noUser"){
+                    console.log('NO USER');
+                    this.setState({loginErrorMessage:'The e-mail address you entered is not correct'});
+                }
+                if (response.data.toString()=='wrongPassword'){
+                    this.setState({loginErrorMessage:'The password you entered is not correct'});
+                }
+                if (response.data.toString()=='pass'){
+                    this.toggleLoginModal();    
+                    let input = {};
+                    input["loginEmail"] = "";
+                    input["loginPassword"] = "";
+                    input["rememberMe"] = "";
+                    this.setState({input:input});
+                    this.setState({loginErrorMessage:''});
+                }
             //    <Redirect to="/Dashboard"/>
               }, (error) => {
                 console.log(error);
@@ -310,6 +332,9 @@ class Header extends Component {
                                 <Input type="password" id="password" name="password" value={this.state.input.password} onChange={this.handleChange}></Input>
                                 <div className="text-danger">{this.state.errors.loginPassword}</div>
                             </FormGroup>
+                            <div> 
+                            <div className="text-danger">{this.state.loginErrorMessage}</div>
+                                </div>
                             <FormGroup check>
                                 <Label check>
                                     <Input type="checkbox" name="remember"  value={this.state.input.rememberMe} onChange={this.handleChange}/>Remember Me
@@ -380,6 +405,7 @@ class Header extends Component {
                             </Col>
                             </Row>
                             <div className="text-danger">{this.state.errors.gender}</div>
+                            <div className="text-danger">{this.state.RegistrationerrorMessage}</div>
                             <Button type="submit" value="submit" color="primary">Register</Button>
                             
                         </Form>

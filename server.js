@@ -80,10 +80,10 @@ app.post('/getUser',function(req,res){
     if (status === "pass") {
       req.session.loggedin = true;
       req.session.username = userCred;
-      console.log(req.session.loggedin);
-      console.log(req.session.username);
+      console.log(req.session.loggedin + req.session.username);
       res.end();
     }
+    res.send(status.toString());
   });
   
 });
