@@ -12,11 +12,14 @@ import io
 from PIL import Image
 #print("IN PIL")
 import sys
+import pathlib
+
 #print("IN SYS")
 import tensorflow as tf
 #print("IN Tensor")
 import cv2
 import numpy as np
+import keras
 from tensorflow.keras.models import Model
 from keras.layers import Activation, Dropout, Flatten, Dense
 import requests 
@@ -51,14 +54,15 @@ def INCV3():
     return model
 
 model = INCV3()
-model.load_weights('./bestmodelinception.h5')
-response = requests.get(sys.argv[1])
+#model.load_weights('weights.h5')
+model = keras.models.load_model("weights.h5")
+#response = requests.get(sys.argv[1])
 #print("im in python now")
-img = np.array(Image.open(io.BytesIO(response.content))) / 255
+#img = np.array(Image.open(io.BytesIO(response.content))) / 255
 #print("IMG" , img.shape)
-
-
-#img1 = cv2.imread("22.png")/255 
+#path = str(pathlib.Path().absolute()) + "/uploads"
+#print(path)
+img = cv2.imread(sys.argv[1]) / 255 
 #print("IMG1" , img1.shape)
 img_modify_size = cv2.resize(img,(224,224))
 img_modify_shape = img_modify_size.reshape(1,224,224,3)
