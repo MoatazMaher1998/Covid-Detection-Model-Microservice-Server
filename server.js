@@ -22,22 +22,25 @@ const AWS = require('aws-sdk');
 var multer = require('multer');
 const fs = require('fs');
 var session = require('express-session');
+const passport = require('passport');
 
 //_______________________________________________________________//
 configurations.decideMode(parseInt(process.env.MODE,10)); // 1 for localhost 2 for heroku server
 
 app.use(session({
   secret: 'secret',
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: false
 }));
+//app.use(passport.initialize());
+//app.use(passport.session());
 
 Database.startConnection(configurations.getDatabaseConnection());
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
-AWS.config.update({AWS_DEFAULT_REGION : 'eu-west-2'});
+//AWS.config.update({AWS_DEFAULT_REGION : 'eu-west-2'});
 AWS.config.update({REGION : 'eu-west-2'});
 app.post('/upload',function(req,res){
       upload(req, res, function (err) {
@@ -47,6 +50,14 @@ app.post('/upload',function(req,res){
             return res.status(500).json(err)
         }
      console.log(req.file.filename);
+     var spawn = require("child_process").spawn; 
+     var process = spawn('python',["./ML.py","uploads/" + req.file.filename] );
+                          process.stdout.on('data', function(data) { 
+                               console.log(data.toString());
+                               res.status(200);
+                               res.send(data.toString());
+                               process.kill();
+                           });
      fs.readFile("./uploads/"+ req.file.filename, (err, data) => {
       if (err) throw err;
       const params = {
@@ -57,14 +68,7 @@ app.post('/upload',function(req,res){
       s3.upload(params, function(s3Err, data) {
           if (s3Err) throw s3Err
           console.log(`File uploaded successfully at ${data.Location}`);
-          var spawn = require("child_process").spawn; 
-          var process = spawn('python',["./ML.py", data.Location] );
-                               process.stdout.on('data', function(data) { 
-                                    console.log(data.toString());
-                                    res.status(200);
-                                    res.send(data.toString());
-                                    process.kill();
-                                });
+         
     
       });
    });
@@ -78,7 +82,8 @@ app.post('/getUser',function(req,res){
     if (status === "pass") {
       req.session.loggedin = true;
       req.session.username = userCred;
-      console.log(req.session.loggedin + req.session.username);
+      console.log(req.session.loggedin);
+      console.log(req.session.username);
       res.end();
     }
   });

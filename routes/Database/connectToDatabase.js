@@ -1,6 +1,8 @@
 //const MongoClient = require('mongodb').MongoClient;
 const mongoose = require("mongoose");
 var bcrypt = require('bcrypt');
+const passport = require("passport");
+const passportLocalMongoose = require("passport-local-mongoose");
 var client;
 const userSchema = new mongoose.Schema({
   name: String,
@@ -9,7 +11,11 @@ const userSchema = new mongoose.Schema({
   age: Number,
   gender: String,
 });
+//userSchema.plugin(passportLocalMongoose);
 var User = mongoose.model("User", userSchema);
+//passport.use(User.createStrategy());
+//passport.serializeUser(User.serializeUser());
+//passport.deserializeUser(User.deserializeUser());
 function addUser(data,res){
     User.find({'email' : data.email},function(err,user){
       if(err){console.log(err);}
@@ -32,7 +38,7 @@ function addUser(data,res){
             gender: data.gender
           });
           myData.save().then(item => {
-            res.status(201).send("user added saved to database");
+              res.status(201).send("user added saved to database");   
           }).catch(err => {
            res.status(400).send("unable to save to database");
           });
