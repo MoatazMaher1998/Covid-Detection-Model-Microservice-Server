@@ -4,4 +4,4 @@ keras==2.4.3
 numpy==1.19.5
 requests==2.25.1
 opencv-python-headless==4.5.1.48
-pathlib==3.4
+pathlib==1.0.1
