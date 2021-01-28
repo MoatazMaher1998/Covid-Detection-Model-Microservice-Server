@@ -53,7 +53,7 @@ def INCV3():
     return model
 
 model = INCV3()
-model.load_weights('weightss.h5')
+model.load_weights('weights.h5')
 #response = requests.get(sys.argv[1])
 #print("im in python now")
 #img = np.array(Image.open(io.BytesIO(response.content))) / 255
