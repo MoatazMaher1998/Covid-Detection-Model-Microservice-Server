@@ -5,9 +5,8 @@ import axios from 'axios';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import '../header.css';
-//const server = require('../')
 
-
+var myStorage = window.localStorage;
 
 class Header extends Component {
 
@@ -34,7 +33,7 @@ class Header extends Component {
         this.handleLogin = this.handleLogin.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleRegistration = this.handleRegistration.bind(this);
-        
+        this.logout = this.logout.bind(this);
     }
     
     responseGoogle = (googleResponse) => {
@@ -61,6 +60,8 @@ class Header extends Component {
                     birthday:birthdate,
                     gender: genders });
                 console.log(this.state);
+                myStorage.setItem("loggedIn", true);
+                this.forceUpdate()
             })
             .catch((error) => {
                 console.log('error ' + error);
@@ -80,7 +81,8 @@ class Header extends Component {
             birthday: response.birthday,
             gender: response.gender
         });
-
+        myStorage.setItem("loggedIn", true);
+        this.forceUpdate()
     }
         
     }
@@ -111,6 +113,21 @@ class Header extends Component {
         });
     }
 
+    logout(){
+        myStorage.setItem("loggedIn", false);
+        this.forceUpdate()
+        this.setState({input: {},
+            errors: {},
+            auth: false,
+            name: '',
+            picture: '',
+            email:'',
+            gender:'',
+            birthday: '',
+            loginErrorMessage:'',
+            RegistrationerrorMessage:''})
+    }
+
     handleRegistration(event){ 
         event.preventDefault();
         if(this.validateRegistration()){
@@ -126,7 +143,7 @@ class Header extends Component {
                 input["dateOfBirth"] = "";
                 input["gender"] = "";
                 this.setState({input:input,RegistrationerrorMessage:''});
-
+                
             })
             .catch((error) => {
                 if(error.status=401){
@@ -232,24 +249,23 @@ class Header extends Component {
         if(this.validateLogin()){
             
             axios.post(process.env.REACT_APP_Domain + "/getUser", this.state.input).then((response) => {
-                console.log('TEST '+ response.data.toString());
-                if (response.data.toString()=="noUser"){
-                    console.log('NO USER');
-                    this.setState({loginErrorMessage:'The e-mail address you entered is not correct'});
-                }
-                if (response.data.toString()=='wrongPassword'){
-                    this.setState({loginErrorMessage:'The password you entered is not correct'});
-                }
-                if (response.data.toString()=='pass'){
+                if(response.data.status.toString()=="pass") {
                     this.toggleLoginModal();    
                     let input = {};
                     input["loginEmail"] = "";
                     input["loginPassword"] = "";
                     input["rememberMe"] = "";
-                    this.setState({input:input});
-                    this.setState({loginErrorMessage:''});
+                    this.setState({input:input,loginErrorMessage:''});
+                    myStorage.setItem("loggedIn", true);                    
+                    this.forceUpdate()
                 }
-            //    <Redirect to="/Dashboard"/>
+                else if (response.data.status.toString()=="noUser"){
+                    this.setState({loginErrorMessage:'The e-mail address you entered is not correct'});
+                }
+                else if (response.data.status.toString()=='wrongPassword'){
+                    this.setState({loginErrorMessage:'The password you entered is not correct'});
+                }
+                
               }, (error) => {
                 console.log(error);
               });;
@@ -279,140 +295,173 @@ class Header extends Component {
             callback={this.responseFacebook} 
             cssClass="loginBtn loginBtn--facebook"
             />);
-        
-        if(this.state.auth){
-            console.log(this.state);
-            return (
-            <Redirect to="/dashboard"/>
-            )
-        } 
-        return (
-            
-            <React.Fragment>
-                <Navbar dark expand="md">
-                    <div className="container">
-                        <NavbarToggler onClick={this.toggleNav} />
-                        <NavbarBrand className="mr-auto" href="/"><img src='assets/images/logo.png' height="30" width="41" alt='Logo' /></NavbarBrand>
-                        <Collapse isOpen={this.state.isNavOpen} navbar>
-                            <Nav navbar>
-                            <NavItem>
-                                <NavLink className="nav-link"  to='/home'><span className="fa fa-home fa-lg"></span> Home</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className="nav-link"  to='/getstarted'><span className="fa fa-upload fa-lg"></span> Get Started</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className="nav-link" to='/aboutus'><span className="fa fa-info fa-lg"></span> About Us</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className="nav-link" to='/contactus'><span className="fa fa-address-card fa-lg"></span> Contact Us</NavLink>
-                            </NavItem>
-                            </Nav>
-                            <Nav className="ml-auto" navbar>
+                    
+          if(myStorage.getItem("loggedIn") === "true"){
+              return (
+                  <div>
+                <React.Fragment>
+                    <Navbar dark expand="md">
+                        <div className="container">
+                            <NavbarToggler onClick={this.toggleNav} />
+                            <NavbarBrand className="mr-auto" href="/"><img src='assets/images/logo.png' height="30" width="41" alt='Logo' /></NavbarBrand>
+                            <Collapse isOpen={this.state.isNavOpen} navbar>
+                                <Nav navbar>
                                 <NavItem>
-                                    <Button outline onClick={this.toggleLoginModal}>
-                                        <span className="fa fa-sign-in fa-lg"></span>Login
-                                    </Button>
+                                    <NavLink className="nav-link"  to='/previousTests'><span className="fa fa-home fa-lg"></span>Previous Tests</NavLink>
                                 </NavItem>
-                            </Nav>
-                        </Collapse>
-                    </div>
-                </Navbar>
-                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleLoginModal} id="login">
-                    <ModalHeader toggle={this.toggleLoginModal}>Login</ModalHeader>
-                    <ModalBody>
-                        <Form onSubmit={this.handleLogin}>
-                            <FormGroup>
-                                <Label htmlFor="email">E-mail</Label>
-                                <Input type="email" id="email" name="email" value={this.state.input.email} onChange={this.handleChange}></Input>
-                                <div className="text-danger">{this.state.errors.loginEmail}</div>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="password">Password</Label>
-                                <Input type="password" id="password" name="password" value={this.state.input.password} onChange={this.handleChange}></Input>
-                                <div className="text-danger">{this.state.errors.loginPassword}</div>
-                            </FormGroup>
-                            <div> 
-                            <div className="text-danger">{this.state.loginErrorMessage}</div>
-                                </div>
-                            <FormGroup check>
-                                <Label check>
-                                    <Input type="checkbox" name="remember"  value={this.state.input.rememberMe} onChange={this.handleChange}/>Remember Me
-                                </Label>
-                            </FormGroup>
-                            <FormGroup> 
-                            <Link onClick={() => {this.toggleRegistrationModal(); this.toggleLoginModal()}}> Not a user? Register here</Link>
-                            </FormGroup>
-                            <FormGroup>
-                            <Button type="submit" value="submit" color="primary">Login</Button>
-                            </FormGroup>
-                            <FormGroup>
-                            {facebookData} 
-                            </FormGroup>
-                            <FormGroup>
-                                <GoogleLogin
-                                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                                buttonText="Login with Google"
-                                onSuccess={this.responseGoogle}
-                                onFailure={this.responseGoogle}
-                                cookiePolicy={'single_host_origin'}
-                                scope={'https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read'}
-                                />
-                             </FormGroup>
+                                <NavItem>
+                                    <NavLink className="nav-link"  to='/getstarted'><span className="fa fa-upload fa-lg"></span>Make a Test</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link" to='/account'><span className="fa fa-info fa-lg"></span>Account Settings</NavLink>
+                                </NavItem>
 
-                        </Form>
-                    </ModalBody>
-                </Modal>
-                <Modal isOpen={this.state.isRegistrationModalOpen} toggle={this.toggleRegistrationModal} id="register">
-                    <ModalHeader toggle={this.toggleRegistrationModal}>Register</ModalHeader>
-                    <ModalBody>
-                        <Form onSubmit={this.handleRegistration}>
-                            <FormGroup>
-                                <Input type="text" id="fullname" name="fullname" placeholder="Full Name" value={this.state.input.name} onChange={this.handleChange}></Input>
-                                <div className="text-danger">{this.state.errors.fullname}</div>
-                            </FormGroup>
-                            <FormGroup>
-                                <Input type="email" id="email" name="email" placeholder="E-mail Address" value={this.state.input.email} onChange={this.handleChange}></Input>
-                                <div className="text-danger">{this.state.errors.email}</div>
-                            </FormGroup>
-                            <FormGroup>
-                                <Input type="password" id="password" name="password" placeholder="Password" value={this.state.input.password} onChange={this.handleChange}></Input>
-                                <div className="text-danger">{this.state.errors.password}</div>
-                            </FormGroup>
-                            <FormGroup>
-                                <Input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" value={this.state.input.confirmPassword} onChange={this.handleChange}></Input>
-                                <div className="text-danger">{this.state.errors.confirmPassword}</div>
-                            </FormGroup>
-                            <FormGroup>
-                                <Input type="date" id="dateOfBirth" name="dateOfBirth" placeholder="Age" value={this.state.input.dateOfBirth} onChange={this.handleChange}></Input>
-                                <div className="text-danger">{this.state.errors.dateOfBirth}</div>
-                            </FormGroup>
-                            <Row form>
-                            <Col md={4}>
-                                <Label for="gender">Gender</Label>
-                            </Col>
-                            <Col md={4}>
-                                <FormGroup check>
-                                    <Input type="radio" name="gender" value="male" onChange={this.handleChange}/>{' '}
-                                    Male
+                                </Nav>
+                                <Nav className="ml-auto" navbar>
+                                    <NavItem>
+                                        <Button outline onClick={this.logout}>
+                                            <span className="fa fa-sign-out fa-lg"></span>Logout
+                                        </Button>
+                                    </NavItem>
+                                </Nav>
+                            </Collapse>
+                        </div>
+                    </Navbar>
+                </React.Fragment>
+              <Redirect to="/dashboard"/>
+              </div>
+              )
+          }
+          else{
+            return (
+            <div>
+                <React.Fragment>
+                    <Navbar dark expand="md">
+                        <div className="container">
+                            <NavbarToggler onClick={this.toggleNav} />
+                            <NavbarBrand className="mr-auto" href="/"><img src='assets/images/logo.png' height="30" width="41" alt='Logo' /></NavbarBrand>
+                            <Collapse isOpen={this.state.isNavOpen} navbar>
+                                <Nav navbar>
+                                <NavItem>
+                                    <NavLink className="nav-link"  to='/home'><span className="fa fa-home fa-lg"></span> Home</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link"  to='/getstarted'><span className="fa fa-upload fa-lg"></span> Get Started</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link" to='/aboutus'><span className="fa fa-info fa-lg"></span> About Us</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link" to='/contactus'><span className="fa fa-address-card fa-lg"></span> Contact Us</NavLink>
+                                </NavItem>
+                                </Nav>
+                                <Nav className="ml-auto" navbar>
+                                    <NavItem>
+                                        <Button outline onClick={this.toggleLoginModal}>
+                                            <span className="fa fa-sign-in fa-lg"></span>Login
+                                        </Button>
+                                    </NavItem>
+                                </Nav>
+                            </Collapse>
+                        </div>
+                    </Navbar>
+                    <Modal isOpen={this.state.isModalOpen} toggle={this.toggleLoginModal} id="login">
+                        <ModalHeader toggle={this.toggleLoginModal}>Login</ModalHeader>
+                        <ModalBody>
+                            <Form onSubmit={this.handleLogin}>
+                                <FormGroup>
+                                    <Label htmlFor="email">E-mail</Label>
+                                    <Input type="email" id="email" name="email" value={this.state.input.email} onChange={this.handleChange}></Input>
+                                    <div className="text-danger">{this.state.errors.loginEmail}</div>
                                 </FormGroup>
-                            </Col>
-                            <Col md={4}>
-                                <FormGroup check>
-                                    <Input type="radio" name="gender" value="female" onChange={this.handleChange}/>{' '}
-                                    Female
+                                <FormGroup>
+                                    <Label htmlFor="password">Password</Label>
+                                    <Input type="password" id="password" name="password" value={this.state.input.password} onChange={this.handleChange}></Input>
+                                    <div className="text-danger">{this.state.errors.loginPassword}</div>
                                 </FormGroup>
-                            </Col>
-                            </Row>
-                            <div className="text-danger">{this.state.errors.gender}</div>
-                            <div className="text-danger">{this.state.RegistrationerrorMessage}</div>
-                            <Button type="submit" value="submit" color="primary">Register</Button>
-                            
-                        </Form>
-                    </ModalBody>
-                </Modal>
-            </React.Fragment>
-        )
+                                <div> 
+                                <div className="text-danger">{this.state.loginErrorMessage}</div>
+                                    </div>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="checkbox" name="remember"  value={this.state.input.rememberMe} onChange={this.handleChange}/>Remember Me
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup> 
+                                <Link onClick={() => {this.toggleRegistrationModal(); this.toggleLoginModal()}}> Not a user? Register here</Link>
+                                </FormGroup>
+                                <FormGroup>
+                                <Button type="submit" value="submit" color="primary">Login</Button>
+                                </FormGroup>
+                                <FormGroup>
+                                {facebookData} 
+                                </FormGroup>
+                                <FormGroup>
+                                    <GoogleLogin
+                                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                                    buttonText="Login with Google"
+                                    onSuccess={this.responseGoogle}
+                                    onFailure={this.responseGoogle}
+                                    cookiePolicy={'single_host_origin'}
+                                    scope={'https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read'}
+                                    />
+                                 </FormGroup>
+                            </Form>
+                        </ModalBody>
+                    </Modal>
+                    <Modal isOpen={this.state.isRegistrationModalOpen} toggle={this.toggleRegistrationModal} id="register">
+                        <ModalHeader toggle={this.toggleRegistrationModal}>Register</ModalHeader>
+                        <ModalBody>
+                            <Form onSubmit={this.handleRegistration}>
+                                <FormGroup>
+                                    <Input type="text" id="fullname" name="fullname" placeholder="Full Name" value={this.state.input.name} onChange={this.handleChange}></Input>
+                                    <div className="text-danger">{this.state.errors.fullname}</div>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input type="email" id="email" name="email" placeholder="E-mail Address" value={this.state.input.email} onChange={this.handleChange}></Input>
+                                    <div className="text-danger">{this.state.errors.email}</div>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input type="password" id="password" name="password" placeholder="Password" value={this.state.input.password} onChange={this.handleChange}></Input>
+                                    <div className="text-danger">{this.state.errors.password}</div>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" value={this.state.input.confirmPassword} onChange={this.handleChange}></Input>
+                                    <div className="text-danger">{this.state.errors.confirmPassword}</div>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input type="date" id="dateOfBirth" name="dateOfBirth" placeholder="Age" value={this.state.input.dateOfBirth} onChange={this.handleChange}></Input>
+                                    <div className="text-danger">{this.state.errors.dateOfBirth}</div>
+                                </FormGroup>
+                                <Row form>
+                                <Col md={4}>
+                                    <Label for="gender">Gender</Label>
+                                </Col>
+                                <Col md={4}>
+                                    <FormGroup check>
+                                        <Input type="radio" name="gender" value="male" onChange={this.handleChange}/>{' '}
+                                        Male
+                                    </FormGroup>
+                                </Col>
+                                <Col md={4}>
+                                    <FormGroup check>
+                                        <Input type="radio" name="gender" value="female" onChange={this.handleChange}/>{' '}
+                                        Female
+                                    </FormGroup>
+                                </Col>
+                                </Row>
+                                <div className="text-danger">{this.state.errors.gender}</div>
+                                <div className="text-danger">{this.state.RegistrationerrorMessage}</div>
+                                <Button type="submit" value="submit" color="primary">Register</Button>
+                            </Form>
+                        </ModalBody>
+                    </Modal>
+                </React.Fragment>
+                <Redirect to="/home"/>
+                </div>
+            )        
+          }
+            
     }
 }
 

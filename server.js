@@ -21,19 +21,10 @@ app.use(express.static(path.join(__dirname, 'build')));
 const AWS = require('aws-sdk');
 var multer = require('multer');
 const fs = require('fs');
-var session = require('express-session');
-const passport = require('passport');
 
 //_______________________________________________________________//
 configurations.decideMode(parseInt(process.env.MODE,10)); // 1 for localhost 2 for heroku server
 
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: false
-}));
-//app.use(passport.initialize());
-//app.use(passport.session());
 
 Database.startConnection(configurations.getDatabaseConnection());
 const s3 = new AWS.S3({
@@ -78,12 +69,9 @@ app.post('/getUser',function(req,res){
   Database.getUser(userCred,function(status){
     console.log(status);
     if (status === "pass") {
-      req.session.loggedin = true;
-      req.session.username = userCred;
-      console.log(req.session.loggedin + req.session.username);
-      res.end();
+      console.log('success');
     }
-    res.send(status.toString());
+    res.send({status:status.toString()});    
   });
   
 });
