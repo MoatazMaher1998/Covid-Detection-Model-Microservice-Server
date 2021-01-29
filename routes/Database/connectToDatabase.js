@@ -1,8 +1,6 @@
-//const MongoClient = require('mongodb').MongoClient;
+
 const mongoose = require("mongoose");
 var bcrypt = require('bcrypt');
-const passport = require("passport");
-const passportLocalMongoose = require("passport-local-mongoose");
 var client;
 const userSchema = new mongoose.Schema({
   name: String,
@@ -11,11 +9,13 @@ const userSchema = new mongoose.Schema({
   age: Number,
   gender: String,
 });
-//userSchema.plugin(passportLocalMongoose);
 var User = mongoose.model("User", userSchema);
-//passport.use(User.createStrategy());
-//passport.serializeUser(User.serializeUser());
-//passport.deserializeUser(User.deserializeUser());
+const dataSchema = new mongoose.Schema({
+    resultemail : String,
+    resultDate : String,
+    resultValue : String
+});
+var Data = mongoose.model("Data",dataSchema);
 function addUser(data,res){
     User.find({'email' : data.email},function(err,user){
       if(err){console.log(err);}
@@ -80,4 +80,18 @@ function getUserSchema(){
 function getClient(){
   return client;
 }
-module.exports = {startConnection, getClient , getUserSchema , addUser , getUser} ;
+function submitData(result,user) {
+  var datetime = new Date();
+  var myData = new Data({
+    resultemail : user,
+    resultDate : datetime.toISOString().slice(0,10),
+    resultValue : result
+  });
+  myData.save();
+}
+function getData(email) {
+  Data.find({'email' : email},function (err,result) {
+    console.log(result);
+  });
+}
+module.exports = {getData,submitData, startConnection, getClient , getUserSchema , addUser , getUser} ;

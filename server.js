@@ -44,6 +44,8 @@ app.post('/upload',function(req,res){
      var spawn = require("child_process").spawn; 
      var process = spawn('python',["./ML.py","uploads/" + req.file.filename] );
                           process.stdout.on('data', function(data) { 
+          
+                              Database.submitData(data.toString(),req.body.email);
                                console.log(data.toString());
                                res.status(200);
                                res.send(data.toString());
@@ -75,13 +77,13 @@ app.post('/getUser',function(req,res){
   });
   
 });
-app.get('/dashboard',function(req,res){
-console.log("yrab");
-});
 app.post('/newuser',function(req,res){
   Database.addUser(req.body,res);
  });
-
+app.post('/getData',function (req,res) {
+  console.log(req.body);
+  Database.getData("moatazmaher1998@gmail.com");
+});
 app.listen(port,function(){
   console.log("Server started on port : "+ port);
 });

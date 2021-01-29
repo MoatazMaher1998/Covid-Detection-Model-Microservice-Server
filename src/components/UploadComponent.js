@@ -1,6 +1,7 @@
 import axios from 'axios'; // npm install --save axios
 import React,{Component} from 'react'; 
 import {Button} from 'reactstrap';
+var myStorage = window.localStorage;
 
 const substrings = ["jpg", "jpeg", "png"];
 class Upload extends Component { 
@@ -32,31 +33,30 @@ class Upload extends Component {
      
     // On file upload (click the upload button) 
     onFileUpload = () => { 
-     
       // Create an object of formData 
       const formData = new FormData(); 
       let errors = {};
-     
+      if(myStorage.getItem("loggedIn") != "true"){
+        errors['loginerror'] = "please login first";
+      }
+      else 
       // Update the formData object 
       try{
       formData.append( 
         "file", 
         this.state.selectedFile, 
-        this.state.selectedFile.name 
+        this.state.selectedFile.name
       );
+      formData.append("email",myStorage.getItem("email"));
       
       if (new RegExp(substrings.join("|")).test(this.state.selectedFile.name )) {
-        // Details of the uploaded file 
+  
         
       console.log(this.state.selectedFile); 
-      // Request made to the backend api 
-      // Send formData object 
       axios.post(process.env.REACT_APP_Domain  + "/upload", formData, {onUploadProgress:ProgressEvent => {
         console.log("upload progress "+ Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%")
         this.setState({message: 'Uploading.. Please Wait',isLoading:true});
-       // if (Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))==100){
-       //   this.setState({message: 'Processing.. Almost There'});
-       // }
+     
           setTimeout(() => {this.setState({message: 'Processing.. Almost There'});}, 5000);
       }
       }
@@ -117,6 +117,7 @@ class Upload extends Component {
                   Examine
                 </Button> 
                 <div className="text-danger">{this.state.errors.fileError}</div>
+                <div className="text-danger">{this.state.errors.loginerror}</div>
             </div> 
           {this.fileData()} 
           <h4>

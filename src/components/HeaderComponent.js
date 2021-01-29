@@ -61,6 +61,7 @@ class Header extends Component {
                     gender: genders });
                 console.log(this.state);
                 myStorage.setItem("loggedIn", true);
+                myStorage.setItem("email",googleResponse.profileObj.email);
                 this.forceUpdate()
             })
             .catch((error) => {
@@ -81,7 +82,9 @@ class Header extends Component {
             birthday: response.birthday,
             gender: response.gender
         });
+     //   axios.post(process.env.REACT_APP_Domain + "/newuser", response);
         myStorage.setItem("loggedIn", true);
+        myStorage.setItem("email",response.email);
         this.forceUpdate()
     }
         
@@ -146,7 +149,7 @@ class Header extends Component {
                 
             })
             .catch((error) => {
-                if(error.status=401){
+                if(error.status===401){
                     this.setState({RegistrationerrorMessage:'This E-mail address is already registered'});
                 }
             });
@@ -250,19 +253,20 @@ class Header extends Component {
             
             axios.post(process.env.REACT_APP_Domain + "/getUser", this.state.input).then((response) => {
                 if(response.data.status.toString()=="pass") {
+                    myStorage.setItem("email",this.state.input.email)  
                     this.toggleLoginModal();    
                     let input = {};
                     input["loginEmail"] = "";
                     input["loginPassword"] = "";
                     input["rememberMe"] = "";
                     this.setState({input:input,loginErrorMessage:''});
-                    myStorage.setItem("loggedIn", true);                    
+                    myStorage.setItem("loggedIn", true);       
                     this.forceUpdate()
                 }
-                else if (response.data.status.toString()=="noUser"){
+                else if (response.data.status.toString()==="noUser"){
                     this.setState({loginErrorMessage:'The e-mail address you entered is not correct'});
                 }
-                else if (response.data.status.toString()=='wrongPassword'){
+                else if (response.data.status.toString()==='wrongPassword'){
                     this.setState({loginErrorMessage:'The password you entered is not correct'});
                 }
                 

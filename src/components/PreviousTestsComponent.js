@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Jumbotron,Button,Table} from 'reactstrap';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
+var myStorage = window.localStorage;
 
 class PreviousTests extends Component {
 
@@ -12,9 +14,12 @@ class PreviousTests extends Component {
       componentDidMount(){
         document.title = "Previous Tests"
       }
-
+      getData(){
+        axios.post(process.env.REACT_APP_Domain  + "/getData", myStorage.getItem("email"))
+        .then((response) => {console.log(response); return( <div>response</div> )});
+      }
       render() {
-    
+        
         return (
             <div className="getStarted full-page">
                 <Jumbotron>
