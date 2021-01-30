@@ -81,8 +81,11 @@ app.post('/newuser',function(req,res){
   Database.addUser(req.body,res);
  });
 app.post('/getData',function (req,res) {
-  console.log(req.body);
-  Database.getData("moatazmaher1998@gmail.com");
+  Database.getData(req.body.email,function(result){
+    console.log(result);
+    res.status(200);
+    res.send(result);
+  });
 });
 app.listen(port,function(){
   console.log("Server started on port : "+ port);
