@@ -89,9 +89,9 @@ function submitData(result,user) {
   });
   myData.save();
 }
-function getData(email) {
-  Data.find({'email' : email},function (err,result) {
-    console.log(result);
+function getData(email,Callback) {
+  Data.find({'resultemail' : email},function (err,result) {
+  Callback(result);
   });
 }
 module.exports = {getData,submitData, startConnection, getClient , getUserSchema , addUser , getUser} ;
