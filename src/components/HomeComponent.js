@@ -16,10 +16,9 @@ class Home extends Component {
                         <div className="row row-header">
                             <div className=" center col-12 col-sm-6">
                                 <h1>Get Your Results Now!</h1>
-                                <p>Press the button below and upload your X-ray image file to get your results now.</p></div>
+                                <p>Login upload your X-ray image file to get your results now.</p></div>
                         </div>
                     </div>
-                    <Link to="/getstarted"><Button color="primary">Get Started</Button></Link>
                 </Jumbotron>
                 <Jumbotron className="center contactUs largeFont borderBottom">
                     <div className="container" >
