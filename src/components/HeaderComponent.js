@@ -118,6 +118,7 @@ class Header extends Component {
 
     logout(){
         myStorage.setItem("loggedIn", false);
+        localStorage.clear();
         this.forceUpdate()
         this.setState({input: {},
             errors: {},
