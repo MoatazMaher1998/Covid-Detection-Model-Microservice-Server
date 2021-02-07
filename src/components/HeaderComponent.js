@@ -38,7 +38,6 @@ class Header extends Component {
     
     responseGoogle = (googleResponse) => {
         
-        console.log(googleResponse);
         if(googleResponse.accessToken)
         {
             let birthdate;
@@ -46,10 +45,8 @@ class Header extends Component {
             var birthdayUrl="https://people.googleapis.com/v1/people/" + googleResponse.googleId + "?personFields=genders,birthdays";
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
             const AuthStr = 'Bearer '.concat(googleResponse.accessToken); 
-            console.log(AuthStr);
             axios.get(proxyurl+birthdayUrl, { headers: { Authorization: AuthStr ,"X-Requested-With": "XMLHttpRequest"} })
             .then(response => {
-                console.log(response.data);
                 birthdate=response.data.birthdays[1].date;
                 genders=response.data.genders[0].value;
                 this.setState({
@@ -59,7 +56,6 @@ class Header extends Component {
                     email:googleResponse.profileObj.email,
                     birthday:birthdate,
                     gender: genders });
-                console.log(this.state);
                 myStorage.setItem("loggedIn", true);
                 myStorage.setItem("email",googleResponse.profileObj.email);
                 this.forceUpdate()
@@ -71,7 +67,6 @@ class Header extends Component {
     }
 
     responseFacebook = response => {
-        console.log(response);
         if(response.status !== 'unknown')
         {
         this.setState({
@@ -118,7 +113,7 @@ class Header extends Component {
 
     logout(){
         myStorage.setItem("loggedIn", false);
-        localStorage.clear();
+        myStorage.clear();
         this.forceUpdate()
         this.setState({input: {},
             errors: {},
@@ -137,7 +132,6 @@ class Header extends Component {
         if(this.validateRegistration()){
 
             axios.post(process.env.REACT_APP_Domain + "/newuser", this.state.input).then(response => {
-                console.log('SUCCESS');
                 this.toggleRegistrationModal();
                 let input = {};
                 input["name"] = "";
@@ -250,7 +244,6 @@ class Header extends Component {
     
 
     handleLogin(event){
-        console.log("TEST");
         event.preventDefault();
         if(this.validateLogin()){
             
@@ -276,7 +269,6 @@ class Header extends Component {
               }, (error) => {
                 console.log(error);
               });;
-            console.log(this.state)
         }
     }
 

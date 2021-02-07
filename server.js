@@ -42,7 +42,7 @@ app.post('/upload',function(req,res){
         }
      console.log(req.file.filename);
      var spawn = require("child_process").spawn; 
-     var process = spawn('python',["./ML.py","uploads/" + req.file.filename] );
+     var process = spawn('python',["./last_ml.py","uploads/" + req.file.filename] );
                           process.stdout.on('data', function(data) { 
           
                               Database.submitData(data.toString(),req.body.email);

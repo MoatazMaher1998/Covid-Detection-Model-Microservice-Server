@@ -18,7 +18,7 @@ class PreviousTests extends Component {
             email : myStorage.getItem("email")}
             
             axios.post(process.env.REACT_APP_Domain  + "/getData", Passer)
-            .then((response) => {console.table(response.data);
+            .then((response) => {
                this.listItems = response.data.map((result,index) => {
                 return(
                          <tr>
@@ -27,7 +27,6 @@ class PreviousTests extends Component {
                                 <td>{result.resultValue}</td>
                         </tr>
                )});
-               console.log(this.listItems);
                this.forceUpdate();
             }
             ); 
