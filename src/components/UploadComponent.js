@@ -43,20 +43,17 @@ class Upload extends Component {
       // Update the formData object 
       try{
       formData.append( 
-        "img", 
+        "file", 
         this.state.selectedFile, 
         this.state.selectedFile.name
       );
       formData.append("email",myStorage.getItem("email"));
-      const headers = {
-        'Access-Control-Allow-Origin':'*',
-        'Content-Type': 'multipart/form-data',
-        'Accept': '*/*'
-        
-      }
+      
       if (new RegExp(substrings.join("|")).test(this.state.selectedFile.name )) {
+  
+        
       console.log(this.state.selectedFile); 
-      axios.post("https://covidapi-alexuni.herokuapp.com/API", formData,headers, {onUploadProgress:ProgressEvent => {
+      axios.post(process.env.REACT_APP_Domain  + "/upload", formData, {onUploadProgress:ProgressEvent => {
         console.log("upload progress "+ Math.round((ProgressEvent.loaded / ProgressEvent.total * 100))+"%")
         this.setState({message: 'Uploading.. Please Wait',isLoading:true});
      

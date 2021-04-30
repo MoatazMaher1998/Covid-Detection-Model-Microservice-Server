@@ -21,12 +21,11 @@ app.use(express.static(path.join(__dirname, 'build')));
 var multer = require('multer');
 const fs = require('fs');
 var FormData = require('form-data');
-
+const request = require('request')
 //_______________________________________________________________//
 configurations.decideMode(parseInt(process.env.MODE,10)); // 1 for localhost 2 for heroku server
 Database.startConnection(configurations.getDatabaseConnection());
 app.post('/upload',function(req,res){
-  const formData = new FormData(); 
       upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return res.status(500).json(err)
@@ -34,6 +33,17 @@ app.post('/upload',function(req,res){
             return res.status(500).json(err)
         }
         console.log(req.file);
+        var test = request.post('https://covidapi-alexuni.herokuapp.com/API', function (err, resp, body) {
+          if (err) {
+            console.log('Error!');
+          } else {
+            console.log('URL: ' + body);
+            res.status(200);
+            res.send(body);
+          }
+        });
+        var form = test.form();
+        form.append('file', fs.createReadStream(req.file.path));
 
    });
     });
