@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a86bdc12-838a-4646-b886-ef1253c8c884" name="Default Changelist" comment="" />
+    <list default="true" id="a86bdc12-838a-4646-b886-ef1253c8c884" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/last_ml.py" beforeDir="false" afterPath="$PROJECT_DIR$/last_ml.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1mygaOCoPpm772hR6BVr5K90lnM" />
   <component name="ProjectViewState">
@@ -15,6 +23,34 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="last_ml" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Graduation Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/last_ml.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.last_ml" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -28,5 +64,31 @@
       <updated>1610471308020</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="275" y="22" key="#Inspections" timestamp="1619016363787">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="275" y="22" key="#Inspections/0.0.1366.728@0.0.1366.728" timestamp="1619016363787" />
+    <state width="1328" height="176" key="GridCell.Tab.0.bottom" timestamp="1619016575913">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1328" height="176" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1619016575913" />
+    <state width="1328" height="176" key="GridCell.Tab.0.center" timestamp="1619016575913">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1328" height="176" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1619016575913" />
+    <state width="1328" height="176" key="GridCell.Tab.0.left" timestamp="1619016575913">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1328" height="176" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1619016575913" />
+    <state width="1328" height="176" key="GridCell.Tab.0.right" timestamp="1619016575913">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1328" height="176" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1619016575913" />
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1619262403381">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="379" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1619262403381" />
   </component>
 </project>
