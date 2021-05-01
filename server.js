@@ -33,11 +33,13 @@ app.post('/upload',function(req,res){
             return res.status(500).json(err)
         }
         console.log(req.file);
+        
         var test = request.post('https://covidapi-alexuni.herokuapp.com/API', function (err, resp, body) {
           if (err) {
             console.log('Error!');
           } else {
             console.log('URL: ' + body);
+            Database.submitData(body.toString(),req.body.email);
             res.status(200);
             res.send(body);
           }
