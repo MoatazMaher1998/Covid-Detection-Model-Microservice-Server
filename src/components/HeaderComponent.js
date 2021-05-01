@@ -141,8 +141,6 @@ class Header extends Component {
                 input["dateOfBirth"] = "";
                 input["gender"] = "";
                 this.setState({input:input,RegistrationerrorMessage:''});
-                myStorage.setItem("loggedIn", true);       
-                this.forceUpdate()
                 
             })
             .catch((error) => {
@@ -248,7 +246,7 @@ class Header extends Component {
         if(this.validateLogin()){
             
             axios.post(process.env.REACT_APP_Domain + "/getUser", this.state.input).then((response) => {
-                if(response.data.status.toString()=="pass") {
+                if(response.data.status.toString()==="pass") {
                     myStorage.setItem("email",this.state.input.email)  
                     this.toggleLoginModal();    
                     let input = {};
@@ -343,6 +341,9 @@ class Header extends Component {
                                 <Nav navbar>
                                 <NavItem>
                                     <NavLink className="nav-link"  to='/home'><span className="fa fa-home fa-lg"></span> Home</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link"  to='/getstarted'><span className="fa fa-upload fa-lg"></span> Get Started</NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink className="nav-link" to='/aboutus'><span className="fa fa-info fa-lg"></span> About Us</NavLink>
