@@ -45,7 +45,7 @@ class Header extends Component {
             var birthdayUrl="https://people.googleapis.com/v1/people/" + googleResponse.googleId + "?personFields=genders,birthdays";
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
             const AuthStr = 'Bearer '.concat(googleResponse.accessToken); 
-            axios.get(proxyurl+birthdayUrl, { headers: { Authorization: AuthStr ,"X-Requested-With": "XMLHttpRequest"} })
+            axios.get(birthdayUrl, { headers: { Authorization: AuthStr ,"X-Requested-With": "XMLHttpRequest"} })
             .then(response => {
                 birthdate=response.data.birthdays[1].date;
                 genders=response.data.genders[0].value;
